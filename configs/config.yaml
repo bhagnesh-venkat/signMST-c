@@ -1,0 +1,46 @@
+# ============================================================
+# Central config. Everything a beginner needs to tweak lives here
+# instead of scattered through the code.
+# ============================================================
+
+# ---- Data ----
+data:
+  root: "data/phoenix2014T"                 # where you extracted the PHOENIX-2014-T release
+  train_csv: "annotations/PHOENIX-2014-T.train.corpus.csv"
+  dev_csv:   "annotations/PHOENIX-2014-T.dev.corpus.csv"
+  test_csv:  "annotations/PHOENIX-2014-T.test.corpus.csv"
+  frames_root: "features/fullFrame-210x260px"  # folder with per-video subfolders of frame images
+  csv_delimiter: "|"
+  max_frames: 150          # videos longer than this are uniformly subsampled
+  frame_size: 224          # resize for the CNN backbone
+
+# ---- Vocabulary (target German text) ----
+vocab:
+  min_freq: 2
+  lowercase: true
+
+# ---- Model ----
+model:
+  d_model: 512
+  nhead: 8
+  num_encoder_layers: 3
+  num_decoder_layers: 3
+  dim_feedforward: 1024
+  dropout: 0.1
+  cnn_backbone: "resnet18"   # torchvision backbone used for per-frame features
+  freeze_cnn: true           # start with the pretrained CNN frozen (faster, less data-hungry)
+
+# ---- Training ----
+train:
+  batch_size: 4
+  epochs: 30
+  lr: 0.0003
+  grad_clip: 1.0
+  num_workers: 2
+  checkpoint_dir: "checkpoints"
+  save_every: 1
+  log_every: 20
+
+# ---- Misc ----
+seed: 42
+device: "cuda"   # falls back to cpu automatically if no GPU is available

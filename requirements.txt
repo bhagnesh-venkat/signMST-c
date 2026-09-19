@@ -1,0 +1,12 @@
+torch>=2.1.0
+torchvision>=0.16.0
+opencv-python-headless>=4.8.0
+mediapipe>=0.10.9
+numpy>=1.24.0
+pandas>=2.0.0
+tqdm>=4.66.0
+sacrebleu>=2.4.0
+rouge-score>=0.1.2
+jiwer>=3.0.3
+PyYAML>=6.0
+Pillow>=10.0.0

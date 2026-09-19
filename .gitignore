@@ -1,0 +1,27 @@
+# data & model artifacts (too large for git, and often licensed data)
+data/
+checkpoints/
+outputs/
+*.pt
+*.pth
+*.mp4
+*.avi
+
+# python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+env/
+*.egg-info/
+build/
+dist/
+
+# jupyter
+.ipynb_checkpoints/
+
+# os / editor
+.DS_Store
+Thumbs.db
+.vscode/
