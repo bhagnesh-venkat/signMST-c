@@ -35,15 +35,13 @@ IMAGENET_STD = [0.229, 0.224, 0.225]
 
 def resolve_video_dir(video_field: str) -> str:
     """
-    The official corpus CSV's `video` column is sometimes a plain folder
-    name, but in the v3 release it's a glob pattern like
-    '<name>/1/*.png' (the '1' is a camera-angle subfolder, and '*.png'
-    matches every frame in it). This strips that down to the actual
-    folder path so we can list the folder ourselves.
+    The official corpus CSV's `video` column looks like
+    '<name>/1/*.png' -- but in the fullFrame-210x260px feature set, the
+    frame images actually live directly inside a folder named just
+    '<name>' (there's no real '/1/' subfolder on disk). So we just take
+    the first path segment, which is the real folder name.
     """
-    if "*" in video_field:
-        return str(Path(video_field).parent)
-    return video_field
+    return video_field.split("/")[0]
 
 
 def uniform_subsample(items, max_len):
