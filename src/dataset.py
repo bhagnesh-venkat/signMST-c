@@ -6,7 +6,7 @@ slightly between release versions -- ALWAYS run `python -m src.inspect_data`
 first and fix configs/config.yaml to match what you actually downloaded):
 
 data/phoenix2014T/
-|-- annotations/
+|-- annotations/manual/
 |   |-- PHOENIX-2014-T.train.corpus.csv
 |   |-- PHOENIX-2014-T.dev.corpus.csv
 |   `-- PHOENIX-2014-T.test.corpus.csv
@@ -31,6 +31,19 @@ from torchvision import transforms
 
 IMAGENET_MEAN = [0.485, 0.456, 0.406]
 IMAGENET_STD = [0.229, 0.224, 0.225]
+
+
+def resolve_video_dir(video_field: str) -> str:
+    """
+    The official corpus CSV's `video` column is sometimes a plain folder
+    name, but in the v3 release it's a glob pattern like
+    '<name>/1/*.png' (the '1' is a camera-angle subfolder, and '*.png'
+    matches every frame in it). This strips that down to the actual
+    folder path so we can list the folder ourselves.
+    """
+    if "*" in video_field:
+        return str(Path(video_field).parent)
+    return video_field
 
 
 def uniform_subsample(items, max_len):
@@ -58,7 +71,8 @@ class PhoenixSLTDataset(Dataset):
         # sanity check: only keep rows whose frame folder actually exists on disk
         keep = []
         for i, row in self.df.iterrows():
-            if (self.frames_root / row["video"]).is_dir():
+            video_dir = resolve_video_dir(row["video"])
+            if (self.frames_root / video_dir).is_dir():
                 keep.append(i)
         dropped = len(self.df) - len(keep)
         if dropped:
@@ -76,7 +90,8 @@ class PhoenixSLTDataset(Dataset):
 
     def __getitem__(self, idx):
         row = self.df.iloc[idx]
-        frames = self._load_frames(self.frames_root / row["video"])
+        video_dir = resolve_video_dir(row["video"])
+        frames = self._load_frames(self.frames_root / video_dir)
         target_ids = torch.tensor(self.vocab.encode(row["translation"]), dtype=torch.long)
         return {
             "name": row["name"],

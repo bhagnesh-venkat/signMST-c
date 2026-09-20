@@ -6,9 +6,9 @@
 # ---- Data ----
 data:
   root: "data/phoenix2014T"                 # where you extracted the PHOENIX-2014-T release
-  train_csv: "annotations/PHOENIX-2014-T.train.corpus.csv"
-  dev_csv:   "annotations/PHOENIX-2014-T.dev.corpus.csv"
-  test_csv:  "annotations/PHOENIX-2014-T.test.corpus.csv"
+  train_csv: "annotations/manual/PHOENIX-2014-T.train.corpus.csv"
+  dev_csv:   "annotations/manual/PHOENIX-2014-T.dev.corpus.csv"
+  test_csv:  "annotations/manual/PHOENIX-2014-T.test.corpus.csv"
   frames_root: "features/fullFrame-210x260px"  # folder with per-video subfolders of frame images
   csv_delimiter: "|"
   max_frames: 150          # videos longer than this are uniformly subsampled
