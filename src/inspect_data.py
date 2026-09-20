@@ -12,7 +12,7 @@ from pathlib import Path
 
 import pandas as pd
 import yaml
-
+from src.dataset import resolve_video_dir
 
 def main(cfg_path):
     cfg = yaml.safe_load(Path(cfg_path).read_text())
@@ -32,7 +32,7 @@ def main(cfg_path):
 
         frames_root = root / d["frames_root"] / split
         if "video" in df.columns:
-            sample_dir = frames_root / df.iloc[0]["video"]
+            sample_dir = frames_root / resolve_video_dir(df.iloc[0]["video"])
             exists = sample_dir.is_dir()
             n_frames = len(list(sample_dir.glob("*.png"))) if exists else 0
             print(f"  sample frame folder exists: {exists} ({n_frames} frames) -> {sample_dir}")
